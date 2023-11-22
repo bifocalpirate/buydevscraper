@@ -12,8 +12,9 @@ headers = {
 }
 
 ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
-if random.choice(range(10)) < 8:
-  ignore_models = []
+ignore_models = []
+#if random.choice(range(10)) < 8:
+#  ignore_models = []
 
 def getMessageFromCatalog(catalog):
   res = ""
@@ -22,7 +23,7 @@ def getMessageFromCatalog(catalog):
     Model: {cat['Name']}
 Price: {cat['Price']}
 Count: {cat['Stock']}
-Details: {cat['DetailsUrl']}
+Details: [website]({cat['DetailsUrl']})
 <<<<<<<<<<<<<<>>>>>>>>>>>>>>
 
 """
