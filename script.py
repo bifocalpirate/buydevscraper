@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
+import random
 import regex
 import requests
 
@@ -11,7 +12,9 @@ headers = {
 }
 
 ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
-ignore_models = []
+
+if (random.choice(range(0,20))==1): #0.1 chance of the above model showing up since it is slow selling
+  ignore_models = []
 
 def getMessageFromCatalog(catalog):
   res = ""
@@ -21,7 +24,7 @@ def getMessageFromCatalog(catalog):
 Price: {cat['Price']}
 Count: {cat['Stock']}
 Details: {cat['DetailsUrl']}
-
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 """
   return res
