@@ -12,8 +12,7 @@ headers = {
 }
 
 ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
-
-if (random.choice(range(0,20))==1): #0.1 chance of the above model showing up since it is slow selling
+if random.choice(range(10)) < 8:
   ignore_models = []
 
 def getMessageFromCatalog(catalog):
@@ -24,12 +23,16 @@ def getMessageFromCatalog(catalog):
 Price: {cat['Price']}
 Count: {cat['Stock']}
 Details: {cat['DetailsUrl']}
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<>>>>>>>>>>>>>>
 
 """
+  if res=="":
+    res = None
   return res
 
 def sendFlash(message):  
+  if message is None:
+    return
   headers = {'Authorization':'Bearer tk_3wow5z8vkbxj0q6obkqfhlvvhwx6c','Tags':'loudspeaker', 'Markdown':'yes','Title':'Device(s) currently for sale'}
   requests.post("https://notifications.notlocalhost.dev:8082/price-flashes", data=message,headers=headers)
   pass
