@@ -11,6 +11,25 @@ headers = {
 }
 
 ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
+ignore_models = []
+
+def getMessageFromCatalog(catalog):
+  res = ""
+  for cat in catalog:
+    res += f"""
+    Model: {cat['Name']}
+Price: {cat['Price']}
+Count: {cat['Stock']}
+Details: {cat['DetailsUrl']}
+
+
+"""
+  return res
+
+def sendFlash(message):  
+  headers = {'Authorization':'Bearer tk_3wow5z8vkbxj0q6obkqfhlvvhwx6c','Tags':'loudspeaker', 'Markdown':'yes','Title':'Device(s) currently for sale'}
+  requests.post("https://notifications.notlocalhost.dev:8082/price-flashes", data=message,headers=headers)
+  pass
 
 def extractProduct(s:str):
   rx = "s\/.*---"  
@@ -69,5 +88,5 @@ while True:
       continue      
   break
 
-print(catalogue)
+sendFlash(getMessageFromCatalog(catalogue))
 
