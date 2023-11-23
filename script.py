@@ -13,14 +13,15 @@ load_dotenv(dotenv_path=dotenv_path)
 
 # keep these a secret!!
 ntfy_auth_key=os.getenv("NTFY_AUTH_KEY")
-base_url = os.getenv("BASE_URL")
+base_url=os.getenv("BASE_URL")
 notification_server_url=os.getenv("NOTIFICATION_SERVER_URL")
+topic_name=os.getenv("TOPIC_NAME")
 
 headers = { 
     'User_Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36'
 }
 
-topic_name = "price-flashes"
+
 # ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
 ignore_models = []
 if random.choice(range(10)) < 2:
@@ -106,6 +107,6 @@ while True:
       visited_pages.append(pages[-1])      
       continue      
   break
-
+sendFlash('TEST')
 sendFlash(getMessageFromCatalog(catalogue))
 
