@@ -107,6 +107,6 @@ while True:
       visited_pages.append(pages[-1])      
       continue      
   break
-sendFlash('TEST')
+
 sendFlash(getMessageFromCatalog(catalogue))
 
