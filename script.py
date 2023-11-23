@@ -4,8 +4,13 @@ from urllib.parse import parse_qs
 import random
 import regex
 import requests
+from dotenv import load_dotenv
+from pathlib import Path
+import os
 
-
+dotenv_path = Path('.env')
+load_dotenv(dotenv_path=dotenv_path)
+NTFY_AUTH_KEY=os.getenv('NTFY_AUTH_KEY')
 base_url = "https://www.buyyourdevice.co.za"
 headers = { 
     'User_Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36'
@@ -34,7 +39,7 @@ Details: [website]({cat['DetailsUrl']})
 def sendFlash(message):  
   if message is None:
     return
-  headers = {'Authorization':'Bearer tk_3wow5z8vkbxj0q6obkqfhlvvhwx6c','Tags':'loudspeaker', 'Markdown':'yes','Title':'Device(s) currently for sale'}
+  headers = {"Authorization":f"Bearer {NTFY_AUTH_KEY}","Tags":"loudspeaker", 'Markdown':'yes','Title':'Device(s) currently for sale'}
   requests.post("https://notifications.notlocalhost.dev:8082/price-flashes", data=message,headers=headers)
   pass
 
@@ -94,6 +99,6 @@ while True:
       visited_pages.append(pages[-1])      
       continue      
   break
-
+sendFlash('TEST')
 sendFlash(getMessageFromCatalog(catalogue))
 
