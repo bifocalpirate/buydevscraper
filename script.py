@@ -10,8 +10,12 @@ import os
 
 dotenv_path = Path('.env')
 load_dotenv(dotenv_path=dotenv_path)
-NTFY_AUTH_KEY=os.getenv('NTFY_AUTH_KEY')
-base_url = "https://www.buyyourdevice.co.za"
+
+# keep these a secret!!
+ntfy_auth_key=os.getenv("NTFY_AUTH_KEY")
+base_url = os.getenv("BASE_URL")
+notification_server_url=os.getenv("NOTIFICATION_SERVER_URL")
+
 headers = { 
     'User_Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36'
 }
@@ -41,8 +45,8 @@ Details: [website]({cat['DetailsUrl']})
 def sendFlash(message):  
   if message is None:
     return
-  headers = {"Authorization":f"Bearer {NTFY_AUTH_KEY}","Tags":"loudspeaker", 'Markdown':'yes','Title':'Device(s) currently for sale'}
-  requests.post(f"https://notifications.notlocalhost.dev:8082/{topic_name}", data=message,headers=headers)
+  headers = {"Authorization":f"Bearer {ntfy_auth_key}","Tags":"loudspeaker", 'Markdown':'yes','Title':'Device(s) currently for sale'}
+  requests.post(f"{notification_server_url}/{topic_name}", data=message,headers=headers)
   pass
 
 def extractProduct(s:str):
