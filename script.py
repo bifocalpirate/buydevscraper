@@ -11,10 +11,12 @@ headers = {
     'User_Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36'
 }
 
-ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
-# ignore_models = []
+topic_name = "price-flashes"
+# ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
+ignore_models = []
 if random.choice(range(10)) < 2:
   ignore_models = []
+
 
 def getMessageFromCatalog(catalog):
   res = ""
@@ -35,7 +37,7 @@ def sendFlash(message):
   if message is None:
     return
   headers = {'Authorization':'Bearer tk_3wow5z8vkbxj0q6obkqfhlvvhwx6c','Tags':'loudspeaker', 'Markdown':'yes','Title':'Device(s) currently for sale'}
-  requests.post("https://notifications.notlocalhost.dev:8082/price-flashes", data=message,headers=headers)
+  requests.post(f"https://notifications.notlocalhost.dev:8082/{topic_name}", data=message,headers=headers)
   pass
 
 def extractProduct(s:str):
@@ -62,6 +64,7 @@ for_sale_items = []
 sold_out_count = 0
 for_sale_count = 0
 catalogue = []
+
 while True:
   r = requests.get(url , headers=headers)
   soup = BeautifulSoup(r.content,'html.parser')  
