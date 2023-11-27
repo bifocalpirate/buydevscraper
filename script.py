@@ -7,8 +7,14 @@ import requests
 from dotenv import load_dotenv
 from pathlib import Path
 import os
+import sys
 
 dotenv_path = Path('.env')
+
+# lol lol..
+if (len(sys.argv) > 0):
+	dotenv_path = sys.argv[1]
+
 load_dotenv(dotenv_path=dotenv_path)
 
 # keep these a secret!!
@@ -49,7 +55,7 @@ def sendFlash(message):
   headers = {"Authorization":f"Bearer {ntfy_auth_key}","Tags":"loudspeaker", 'Markdown':'yes','Title':'Device(s) currently for sale'}
   requests.post(f"{notification_server_url}/{topic_name}", data=message,headers=headers)
   pass
-
+sendFlash('test')
 def extractProduct(s:str):
   rx = "s\/.*---"  
   v =regex.findall(rx,s)[0]
