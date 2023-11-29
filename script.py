@@ -13,12 +13,15 @@ import logging
 
 dotenv_path = Path('.env')
 
-if (len(sys.argv) > 0):
-        dotenv_path = sys.argv[1]
+if (len(sys.argv) == 2):
+  dotenv_path = sys.argv[1]
 
 logfile_name = f"{dotenv_path}.log"
-
+import logging
+logging.basicConfig(filename=logfile_name, level=logging.INFO)
 load_dotenv(dotenv_path=dotenv_path)
+
+logging.info("Script started...")
 
 # keep these a secret!!
 ntfy_auth_key=os.getenv("NTFY_AUTH_KEY")
@@ -87,7 +90,6 @@ while True:
   r = requests.get(url , headers=headers)
   soup = BeautifulSoup(r.content,'html.parser')  
   items = soup.find_all('li',{'class':'grid__item'})    
-
   for item in items:         
     p  =item.find('dl',{'class':'price price--listing'})         
     if p is not None:          
@@ -103,7 +105,9 @@ while True:
           catalogue.append({'Name':model_name,
                             'Price':price,
                             'DetailsUrl':base_url+details_url,
-                            'Stock':getInStock(details_url)})                         
+                            'Stock':getInStock(details_url)})
+    else:
+      sold_out_count += 1                         
   
   has_next_page = soup.find('a',{'class':'btn btn--tertiary btn--narrow'})
   if (has_next_page is not None):
@@ -115,6 +119,7 @@ while True:
       visited_pages.append(pages[-1])      
       continue      
   break
+logging.info(f"Found {sold_out_count} sold out, and {for_sale_count} for sale.")
 
 sendFlash(getMessageFromCatalog(catalogue))
 
