@@ -7,8 +7,17 @@ import requests
 from dotenv import load_dotenv
 from pathlib import Path
 import os
+import sys
+
+import logging
 
 dotenv_path = Path('.env')
+
+if (len(sys.argv) > 0):
+        dotenv_path = sys.argv[1]
+
+logfile_name = f"{dotenv_path}.log"
+
 load_dotenv(dotenv_path=dotenv_path)
 
 # keep these a secret!!
@@ -26,7 +35,6 @@ headers = {
 ignore_models = []
 if random.choice(range(10)) < 2:
   ignore_models = []
-
 
 def getMessageFromCatalog(catalog):
   res = ""
@@ -110,3 +118,4 @@ while True:
 
 sendFlash(getMessageFromCatalog(catalogue))
 
+logging.info(f"Script completed...")
