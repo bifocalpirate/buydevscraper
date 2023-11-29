@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 import os
 import sys
-
 import logging
 
 dotenv_path = Path('.env')
@@ -17,8 +16,13 @@ if (len(sys.argv) == 2):
   dotenv_path = sys.argv[1]
 
 logfile_name = f"{dotenv_path}.log"
-import logging
-logging.basicConfig(filename=logfile_name, level=logging.INFO)
+
+logging.basicConfig(
+    filename=logfile_name,
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S')
+
 load_dotenv(dotenv_path=dotenv_path)
 
 logging.info("Script started...")
