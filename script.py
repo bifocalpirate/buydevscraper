@@ -8,9 +8,11 @@ from dotenv import load_dotenv
 from pathlib import Path
 import os
 import sys
+
 import logging
 
 dotenv_path = Path('.env')
+
 if (len(sys.argv) > 0):
         dotenv_path = sys.argv[1]
 
@@ -33,7 +35,6 @@ headers = {
 ignore_models = []
 if random.choice(range(10)) < 2:
   ignore_models = []
-
 
 def getMessageFromCatalog(catalog):
   res = ""
