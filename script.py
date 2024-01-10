@@ -37,10 +37,10 @@ headers = {
     'User_Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36'
 }
 
-
-# ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
 ignore_models = []
-if random.choice(range(10)) < 2:
+ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
+
+if random.choice(range(30)) < 2:
   ignore_models = []
 
 def getMessageFromCatalog(catalog):
