@@ -60,9 +60,11 @@ Details: [website]({cat['DetailsUrl']})
 
 def sendFlash(message):  
   if message is None:
+    logging.info("sendFlash received a None Message.")
     return
   headers = {"Authorization":f"Bearer {ntfy_auth_key}","Tags":"loudspeaker", 'Markdown':'yes','Title':'Device(s) currently for sale'}
   requests.post(f"{notification_server_url}/{topic_name}", data=message,headers=headers)
+  logging.info("Message sent.")
   pass
 
 def extractProduct(s:str):
