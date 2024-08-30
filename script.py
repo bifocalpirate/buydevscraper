@@ -61,7 +61,7 @@ Details: [website]({cat['DetailsUrl']})
 def sendFlash(message):  
   if message is None:
     logging.info("sendFlash received a None Message.")
-    return
+    return 
   headers = {"Authorization":f"Bearer {ntfy_auth_key}","Tags":"loudspeaker", 'Markdown':'yes','Title':'Device(s) currently for sale'}
   requests.post(f"{notification_server_url}/{topic_name}", data=message,headers=headers)
   logging.info("Message sent.")
@@ -98,15 +98,17 @@ while True:
   items = soup.find_all('li',{'class':'grid__item'})    
   for item in items:         
     p  =item.find('dl',{'class':'price price--listing'})         
+    img = item.find('img', {'class':'grid-view-item__image'})
+    model_name = extractProduct(img['data-src'])
+    logging.info(f"Extracted model_name '{model_name}'")
     if p is not None:          
       for_sale_count += 1
       for_sale_items.append(item)        
-      price = item.find('span',{'class':'price-item price-item--sale'}).text.strip()
-      img = item.find('img', {'class':'grid-view-item__image'})
+      price = item.find('span',{'class':'price-item price-item--sale'}).text.strip()      
       details_a = item.find('a',{'class':'grid-view-item__link grid-view-item__image-container full-width-link'})
       details_url = details_a['href']
       if (img is not None):
-        model_name = extractProduct(img['data-src'])
+        
         if (model_name not in ignore_models):
           catalogue.append({'Name':model_name,
                             'Price':price,
