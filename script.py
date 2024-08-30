@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qs
 import random
 import regex
+import re
 import requests
 from dotenv import load_dotenv
 from pathlib import Path
@@ -38,7 +39,7 @@ headers = {
 }
 
 ignore_models = []
-ignore_models = ['Lenovo-ThinkCentre-M910q-Tiny']
+ignore_models = ['Lenovo ThinkCentre M910Q USFF (Refurbished/ 2nd hand)']
 
 if random.choice(range(30)) < 2:
   ignore_models = []
@@ -67,12 +68,8 @@ def sendFlash(message):
   logging.info("Message sent.")
   pass
 
-def extractProduct(s:str):
-  rx = "s\/.*---"  
-  v =regex.findall(rx,s)[0]
-  v = v.replace("s/","")
-  v = v.replace("---","")
-  return v
+def extractTagText(s:str):
+  return re.sub('<[^<>]+>', '', s)  
   
 def getInStock(u:str):
   url = base_url  + u
@@ -98,17 +95,20 @@ while True:
   items = soup.find_all('li',{'class':'grid__item'})    
   for item in items:         
     p  =item.find('dl',{'class':'price price--listing'})         
-    img = item.find('img', {'class':'grid-view-item__image'})
-    model_name = extractProduct(img['data-src'])
-    logging.info(f"Extracted model_name '{model_name}'")
+    img = item.find('a', {'class':'grid-view-item__link'})    
+    if img is not None:      
+      model_name = extractTagText(img.find('span',{'class':'visually-hidden'}).text)
+      logging.info(f"Extracted model_name '{model_name}'")
+    else:
+      sold_out_count += 1                         
+      continue
     if p is not None:          
       for_sale_count += 1
       for_sale_items.append(item)        
       price = item.find('span',{'class':'price-item price-item--sale'}).text.strip()      
       details_a = item.find('a',{'class':'grid-view-item__link grid-view-item__image-container full-width-link'})
       details_url = details_a['href']
-      if (img is not None):
-        
+      if (img is not None):        
         if (model_name not in ignore_models):
           catalogue.append({'Name':model_name,
                             'Price':price,
